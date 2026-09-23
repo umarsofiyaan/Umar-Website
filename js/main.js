@@ -106,8 +106,8 @@
 
         const interactables = document.querySelectorAll('a, button, .magnetic, [data-magnetic]');
         interactables.forEach(el => {
-            el.addEventListener('mouseenter', () => isHovering = true);
-            el.addEventListener('mouseleave', () => isHovering = false);
+            el.addEventListener('mouseenter', () => { isHovering = true; cursor.classList.add('hovering'); });
+            el.addEventListener('mouseleave', () => { isHovering = false; cursor.classList.remove('hovering'); });
         });
 
         function renderCursor() {
