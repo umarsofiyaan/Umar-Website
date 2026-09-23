@@ -1,558 +1,546 @@
 /**
- * Main JavaScript for Agency Portfolio
- * Uses Three.js r128 and GSAP 3.12.5 + ScrollTrigger
+ * umarsofiyaan.shop — v3 Motion Graphics Engine
+ * Scroll-driven cinematic storytelling with Three.js + GSAP
  */
-
 (function () {
-    // Register GSAP Plugins
-    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
-        gsap.registerPlugin(ScrollTrigger);
-    }
+  gsap.registerPlugin(ScrollTrigger);
 
-    // Check for reduced motion
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let wW = window.innerWidth, wH = window.innerHeight;
+  let mouseX = 0, mouseY = 0, normX = 0, normY = 0;
 
-    // --- State & Variables ---
-    let windowWidth = window.innerWidth;
-    let windowHeight = window.innerHeight;
-    let mouseX = 0;
-    let mouseY = 0;
-    let normMouseX = 0;
-    let normMouseY = 0;
+  const lerp = (a, b, t) => a + (b - a) * t;
+  function debounce(fn, ms) { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; }
 
-    // --- Utils ---
-    const lerp = (start, end, amt) => (1 - amt) * start + amt * end;
-    
-    function debounce(func, wait) {
-        let timeout;
-        return function (...args) {
-            clearTimeout(timeout);
-            timeout = setTimeout(() => func.apply(this, args), wait);
-        };
-    }
+  window.addEventListener('mousemove', e => {
+    mouseX = e.clientX; mouseY = e.clientY;
+    normX = (e.clientX / wW) * 2 - 1;
+    normY = -(e.clientY / wH) * 2 + 1;
+  });
+  window.addEventListener('resize', debounce(() => { wW = window.innerWidth; wH = window.innerHeight; }, 250));
 
-    // Track mouse globally
-    window.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-        normMouseX = (e.clientX / windowWidth) * 2 - 1;
-        normMouseY = -(e.clientY / windowHeight) * 2 + 1;
+  /* ================================================================
+     1. LOADER
+     ================================================================ */
+  function initLoader() {
+    const loader = document.getElementById('loader');
+    const fill = document.querySelector('.loader-bar-fill');
+    const counter = document.querySelector('.loader-counter');
+    if (!loader) return;
+    if (prefersReduced) { loader.style.display = 'none'; initHero(); return; }
+
+    const p = { v: 0 };
+    gsap.to(p, {
+      v: 100, duration: 1.8, ease: 'power2.inOut',
+      onUpdate: () => {
+        if (counter) counter.textContent = Math.floor(p.v);
+        if (fill) fill.style.width = p.v + '%';
+      },
+      onComplete: () => {
+        loader.classList.add('done');
+        setTimeout(() => { loader.style.display = 'none'; initHero(); }, 500);
+      }
+    });
+  }
+
+  /* ================================================================
+     2. CURSOR
+     ================================================================ */
+  function initCursor() {
+    if (prefersReduced || wW <= 768) return;
+    const cur = document.getElementById('cursor');
+    const dot = cur?.querySelector('.cursor-dot');
+    const ring = cur?.querySelector('.cursor-ring');
+    if (!cur || !dot || !ring) return;
+
+    let dx = 0, dy = 0, rx = 0, ry = 0, sc = 1, op = 1, hover = false;
+    document.querySelectorAll('a,button,[data-magnetic]').forEach(el => {
+      el.addEventListener('mouseenter', () => { hover = true; cur.classList.add('hovering'); });
+      el.addEventListener('mouseleave', () => { hover = false; cur.classList.remove('hovering'); });
     });
 
-    const debouncedResize = debounce(() => {
-        windowWidth = window.innerWidth;
-        windowHeight = window.innerHeight;
-    }, 250);
-    window.addEventListener('resize', debouncedResize);
+    (function tick() {
+      dx = lerp(dx, mouseX, 0.15); dy = lerp(dy, mouseY, 0.15);
+      rx = lerp(rx, mouseX, 0.08); ry = lerp(ry, mouseY, 0.08);
+      sc = lerp(sc, hover ? 1.5 : 1, 0.1);
+      op = lerp(op, hover ? 0.5 : 1, 0.1);
+      dot.style.transform = `translate3d(${dx}px,${dy}px,0) translate(-50%,-50%)`;
+      ring.style.transform = `translate3d(${rx}px,${ry}px,0) translate(-50%,-50%) scale(${sc})`;
+      ring.style.opacity = op;
+      requestAnimationFrame(tick);
+    })();
+  }
 
+  /* ================================================================
+     3. THREE.JS — Globe + Particles
+     ================================================================ */
+  function initThree() {
+    const canvas = document.getElementById('three-canvas');
+    if (!canvas || typeof THREE === 'undefined' || prefersReduced) return;
 
-    // --- 1. Loader ---
-    function initLoader() {
-        const loader = document.getElementById('loader');
-        const loaderBarFill = document.querySelector('.loader-bar-fill');
-        const loaderCounter = document.querySelector('.loader-counter');
+    const scene = new THREE.Scene();
+    const cam = new THREE.PerspectiveCamera(75, wW / wH, 0.1, 1000);
+    cam.position.z = 50;
 
-        if (!loader || prefersReducedMotion) {
-            if (loader) {
-                loader.style.display = 'none';
-            }
-            initHeroAnimations();
-            return;
-        }
+    const ren = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    ren.setSize(wW, wH);
+    ren.setPixelRatio(Math.min(devicePixelRatio, 2));
 
-        let progress = { value: 0 };
-        
-        gsap.to(progress, {
-            value: 100,
-            duration: 2,
-            ease: 'power2.inOut',
-            onUpdate: () => {
-                if (loaderCounter) {
-                    loaderCounter.textContent = Math.floor(progress.value);
-                }
-                if (loaderBarFill) {
-                    loaderBarFill.style.width = progress.value + '%';
-                }
-            },
-            onComplete: () => {
-                loader.classList.add('done');
-                setTimeout(() => {
-                    loader.style.display = 'none';
-                    initHeroAnimations();
-                }, 500);
-            }
+    const group = new THREE.Group();
+    scene.add(group);
+
+    // Globe wireframe
+    const geo = new THREE.IcosahedronGeometry(15, 3);
+    const edges = new THREE.EdgesGeometry(geo);
+    const globe = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0x6366f1, opacity: 0.12, transparent: true }));
+    group.add(globe);
+
+    // Particles in sphere
+    const pGeo = new THREE.BufferGeometry();
+    const count = 500;
+    const pos = new Float32Array(count * 3);
+    for (let i = 0; i < count * 3; i += 3) {
+      const u = Math.random(), v = Math.random();
+      const th = u * Math.PI * 2, ph = Math.acos(2 * v - 1);
+      const r = Math.cbrt(Math.random()) * 70;
+      pos[i] = r * Math.sin(ph) * Math.cos(th);
+      pos[i + 1] = r * Math.sin(ph) * Math.sin(th);
+      pos[i + 2] = r * Math.cos(ph);
+    }
+    pGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    const pts = new THREE.Points(pGeo, new THREE.PointsMaterial({ size: 0.3, color: 0x6366f1, transparent: true, opacity: 0.35, blending: THREE.AdditiveBlending }));
+    scene.add(pts);
+
+    // Scroll push
+    gsap.to(group.position, { z: -60, ease: 'none', scrollTrigger: { trigger: document.body, start: 'top top', end: 'bottom bottom', scrub: 1 } });
+
+    (function animate() {
+      requestAnimationFrame(animate);
+      globe.rotation.y += 0.001;
+      globe.rotation.x += 0.0005;
+      pts.rotation.y -= 0.0004;
+      cam.position.x += (normX * 5 - cam.position.x) * 0.02;
+      cam.position.y += (normY * 3 - cam.position.y) * 0.02;
+      cam.lookAt(scene.position);
+      ren.render(scene, cam);
+    })();
+
+    window.addEventListener('resize', debounce(() => {
+      cam.aspect = wW / wH;
+      cam.updateProjectionMatrix();
+      ren.setSize(wW, wH);
+    }, 250));
+  }
+
+  /* ================================================================
+     4. NAV SCROLL
+     ================================================================ */
+  function initNav() {
+    const nav = document.getElementById('nav');
+    if (!nav) return;
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('nav-scrolled', window.scrollY > 80);
+    }, { passive: true });
+  }
+
+  /* ================================================================
+     5. HERO ENTRANCE
+     ================================================================ */
+  function initHero() {
+    if (prefersReduced) return;
+    const tl = gsap.timeline();
+    const words = document.querySelectorAll('.hero-title .word');
+    if (words.length) tl.fromTo(words, { y: '120%', opacity: 0 }, { y: '0%', opacity: 1, duration: 1, stagger: 0.15, ease: 'power4.out' });
+    const ol = document.querySelector('.hero-overline');
+    if (ol) tl.fromTo(ol, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' }, '<0.5');
+    const sub = document.querySelector('.hero-sub');
+    if (sub) tl.fromTo(sub, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' }, '<0.2');
+    const sc = document.querySelector('.hero-scroll');
+    if (sc) tl.fromTo(sc, { opacity: 0 }, { opacity: 1, duration: 1 }, '<0.5');
+  }
+
+  /* ================================================================
+     6. SERVICES HORIZONTAL SCROLL
+     ================================================================ */
+  function initServices() {
+    const sec = document.querySelector('.services');
+    const track = document.querySelector('.services-track');
+    if (!sec || !track || prefersReduced) return;
+
+    const tween = gsap.to(track, {
+      x: () => -(track.scrollWidth - window.innerWidth),
+      ease: 'none',
+      scrollTrigger: { trigger: sec, pin: true, scrub: 1, end: () => '+=' + (track.scrollWidth - window.innerWidth), invalidateOnRefresh: true }
+    });
+
+    document.querySelectorAll('.service-panel').forEach(panel => {
+      const inner = panel.querySelector('.panel-inner');
+      if (inner) {
+        gsap.fromTo(inner, { opacity: 0, y: 40 }, {
+          opacity: 1, y: 0, ease: 'power2.out',
+          scrollTrigger: { trigger: panel, containerAnimation: tween, start: 'left 80%', toggleActions: 'play none none reverse' }
         });
-    }
+      }
+    });
+  }
 
-    // --- 2. Custom Cursor ---
-    function initCursor() {
-        if (prefersReducedMotion || windowWidth <= 768) return;
+  /* ================================================================
+     7. WORK INTRO
+     ================================================================ */
+  function initWorkIntro() {
+    const lines = document.querySelectorAll('.wi-line');
+    if (!lines.length || prefersReduced) return;
+    gsap.fromTo(lines, { y: 60, opacity: 0 }, {
+      y: 0, opacity: 1, duration: 1, stagger: 0.2, ease: 'power3.out',
+      scrollTrigger: { trigger: '.work-intro', start: 'top 70%' }
+    });
+  }
 
-        const cursor = document.getElementById('cursor');
-        const dot = document.querySelector('.cursor-dot');
-        const ring = document.querySelector('.cursor-ring');
-        
-        if (!cursor || !dot || !ring) return;
+  /* ================================================================
+     8. STORY ENGINE — The motion graphics core
+     
+     Each .story section is pinned. Inside, .sf frames are
+     sequenced via a scrubbed GSAP timeline. Each frame:
+       1. Enters (opacity 0→1, scale/translate)
+       2. Holds (visible)
+       3. Exits (opacity 1→0, scale/translate)
+     ================================================================ */
 
-        let dotX = mouseX;
-        let dotY = mouseY;
-        let ringX = mouseX;
-        let ringY = mouseY;
+  /**
+   * Build a timeline for a single story frame.
+   * @param {string} id - element ID
+   * @param {object} opts - { enter, hold, exit } durations + custom props
+   */
+  function frame(tl, id, opts = {}) {
+    const el = document.getElementById(id);
+    if (!el) return tl;
 
-        // Hover state variables
-        let isHovering = false;
-        let ringScale = 1;
-        let ringOpacity = 1;
+    const enter = opts.enter || {};
+    const exit = opts.exit || {};
+    const hold = opts.hold ?? 0.6;
 
-        const interactables = document.querySelectorAll('a, button, .magnetic, [data-magnetic]');
-        interactables.forEach(el => {
-            el.addEventListener('mouseenter', () => { isHovering = true; cursor.classList.add('hovering'); });
-            el.addEventListener('mouseleave', () => { isHovering = false; cursor.classList.remove('hovering'); });
-        });
+    // Default entrance: scale up + fade in
+    const enterFrom = { opacity: 0, scale: enter.scale ?? 0.7, y: enter.y ?? 40, rotation: enter.rotation ?? 0, ...enter.from };
+    const enterTo = { opacity: 1, scale: 1, y: 0, rotation: 0, duration: enter.dur ?? 0.5, ease: enter.ease ?? 'power3.out', ...enter.to };
 
-        function renderCursor() {
-            if (windowWidth <= 768) return; // Disable on resize to small screen
+    // Default exit: scale up more + fade out (zoom through effect)
+    const exitTo = { opacity: 0, scale: exit.scale ?? 1.8, y: exit.y ?? 0, duration: exit.dur ?? 0.4, ease: exit.ease ?? 'power2.in', ...exit.to };
 
-            dotX = lerp(dotX, mouseX, 0.15);
-            dotY = lerp(dotY, mouseY, 0.15);
-            
-            ringX = lerp(ringX, mouseX, 0.08);
-            ringY = lerp(ringY, mouseY, 0.08);
+    tl.fromTo(el, enterFrom, enterTo);
+    if (hold > 0) tl.to(el, { duration: hold });  // hold visible
+    tl.to(el, exitTo);
 
-            const targetScale = isHovering ? 1.5 : 1;
-            const targetOpacity = isHovering ? 0.5 : 1;
+    return tl;
+  }
 
-            ringScale = lerp(ringScale, targetScale, 0.1);
-            ringOpacity = lerp(ringOpacity, targetOpacity, 0.1);
+  /* ── SMC Story ── */
+  function initStorySMC() {
+    const sec = document.getElementById('story-smc');
+    if (!sec || prefersReduced) return;
 
-            dot.style.transform = `translate3d(${dotX}px, ${dotY}px, 0) translate(-50%, -50%)`;
-            ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) translate(-50%, -50%) scale(${ringScale})`;
-            ring.style.opacity = ringOpacity;
+    const tl = gsap.timeline();
 
-            requestAnimationFrame(renderCursor);
+    // 📧 emoji spins in
+    frame(tl, 'smc-1', {
+      enter: { scale: 0.2, from: { rotation: -180 }, dur: 0.6 },
+      hold: 0.3,
+      exit: { scale: 3, to: { rotation: 30 } }
+    });
+
+    // "YOUR INBOX IS A MESS."
+    frame(tl, 'smc-2', {
+      enter: { y: 80, scale: 0.8, dur: 0.5 },
+      hold: 0.8,
+      exit: { scale: 2.5, dur: 0.5 }
+    });
+
+    // "7,283" — big number
+    frame(tl, 'smc-3', {
+      enter: { scale: 0.3, dur: 0.6, ease: 'back.out(1.5)' },
+      hold: 0.7,
+      exit: { scale: 4, dur: 0.6 }
+    });
+
+    // "7 CATEGORIES."
+    frame(tl, 'smc-4', {
+      enter: { y: 100, scale: 0.9 },
+      hold: 0.4,
+      exit: { y: -60, scale: 1.1, dur: 0.3 }
+    });
+
+    // "ONE SCAN."
+    frame(tl, 'smc-5', {
+      enter: { y: 60, scale: 0.95 },
+      hold: 0.4,
+      exit: { y: -50, dur: 0.3 }
+    });
+
+    // "SORTED." — accent
+    frame(tl, 'smc-6', {
+      enter: { scale: 0.5, dur: 0.4, ease: 'back.out(2)' },
+      hold: 0.5,
+      exit: { scale: 3, dur: 0.5 }
+    });
+
+    // "BULK DELETE?"
+    frame(tl, 'smc-7', {
+      enter: { scale: 1.5, from: { opacity: 0 }, dur: 0.4 },
+      hold: 0.5,
+      exit: { scale: 0.8, to: { y: -30 }, dur: 0.3 }
+    });
+
+    // "WE GOT YOU."
+    frame(tl, 'smc-8', {
+      enter: { y: 60, scale: 0.85, dur: 0.5 },
+      hold: 0.8,
+      exit: { scale: 2, dur: 0.5 }
+    });
+
+    // "OOPS?"
+    frame(tl, 'smc-9', {
+      enter: { scale: 2, dur: 0.3 },
+      hold: 0.3,
+      exit: { scale: 0.5, dur: 0.3 }
+    });
+
+    // "30-DAY UNDO."
+    frame(tl, 'smc-10', {
+      enter: { y: 50, scale: 0.9, dur: 0.5 },
+      hold: 0.8,
+      exit: { scale: 1.5, dur: 0.5 }
+    });
+
+    // Product CTA
+    frame(tl, 'smc-11', {
+      enter: { y: 40, scale: 0.95, dur: 0.6 },
+      hold: 1.2,
+      exit: { to: { opacity: 0 }, dur: 0.4 }
+    });
+
+    ScrollTrigger.create({
+      trigger: sec,
+      pin: true,
+      scrub: 1,
+      start: 'top top',
+      end: '+=5000',
+      animation: tl
+    });
+  }
+
+  /* ── WorkspaceForge Story ── */
+  function initStoryWF() {
+    const sec = document.getElementById('story-wf');
+    if (!sec || prefersReduced) return;
+
+    const tl = gsap.timeline();
+
+    // "YOUR ADMIN CONSOLE"
+    frame(tl, 'wf-1', {
+      enter: { y: 80, scale: 0.85 },
+      hold: 0.6,
+      exit: { y: -40, dur: 0.3 }
+    });
+
+    // "IS STUCK IN 2015." — dim
+    frame(tl, 'wf-2', {
+      enter: { scale: 0.9, dur: 0.4 },
+      hold: 0.6,
+      exit: { scale: 2.5, dur: 0.5 }
+    });
+
+    // "50+" — mega number
+    frame(tl, 'wf-3', {
+      enter: { scale: 0.2, dur: 0.6, ease: 'back.out(1.7)' },
+      hold: 0.8,
+      exit: { scale: 4, dur: 0.6 }
+    });
+
+    // "MEET YOUR AI ADMIN."
+    frame(tl, 'wf-4', {
+      enter: { y: 60, scale: 0.9 },
+      hold: 0.5,
+      exit: { y: -50, dur: 0.3 }
+    });
+
+    // "POWERED BY GEMINI."
+    frame(tl, 'wf-5', {
+      enter: { scale: 0.8, dur: 0.5 },
+      hold: 0.8,
+      exit: { scale: 1.8, dur: 0.5 }
+    });
+
+    // Product CTA
+    frame(tl, 'wf-6', {
+      enter: { y: 40, scale: 0.95, dur: 0.6 },
+      hold: 1.2,
+      exit: { to: { opacity: 0 }, dur: 0.4 }
+    });
+
+    ScrollTrigger.create({
+      trigger: sec,
+      pin: true,
+      scrub: 1,
+      start: 'top top',
+      end: '+=3500',
+      animation: tl
+    });
+  }
+
+  /* ── DNS Story ── */
+  function initStoryDNS() {
+    const sec = document.getElementById('story-dns');
+    if (!sec || prefersReduced) return;
+
+    const tl = gsap.timeline();
+
+    // "MX? SPF? DKIM? DMARC?"
+    frame(tl, 'dns-1', {
+      enter: { scale: 0.7, dur: 0.5 },
+      hold: 0.6,
+      exit: { y: -50, dur: 0.3 }
+    });
+
+    // "BIMI? PTR?"
+    frame(tl, 'dns-2', {
+      enter: { y: 60 },
+      hold: 0.6,
+      exit: { scale: 2, dur: 0.4 }
+    });
+
+    // "ONE LOOKUP."
+    frame(tl, 'dns-3', {
+      enter: { scale: 0.5, dur: 0.5, ease: 'back.out(2)' },
+      hold: 0.8,
+      exit: { scale: 1.5, dur: 0.4 }
+    });
+
+    // Product CTA
+    frame(tl, 'dns-4', {
+      enter: { y: 40, scale: 0.95, dur: 0.6 },
+      hold: 1.2,
+      exit: { to: { opacity: 0 }, dur: 0.4 }
+    });
+
+    ScrollTrigger.create({
+      trigger: sec,
+      pin: true,
+      scrub: 1,
+      start: 'top top',
+      end: '+=2500',
+      animation: tl
+    });
+  }
+
+  /* ── Story Transitions ── */
+  function initTransitions() {
+    document.querySelectorAll('.story-transition .sf').forEach(el => {
+      gsap.fromTo(el,
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 1, ease: 'power2.out',
+          scrollTrigger: { trigger: el.parentElement, start: 'top 70%', toggleActions: 'play none none reverse' }
         }
-        
-        requestAnimationFrame(renderCursor);
-    }
+      );
+    });
+  }
 
+  /* ================================================================
+     9. TECH GRID
+     ================================================================ */
+  function initTech() {
+    if (prefersReduced) return;
+    const items = document.querySelectorAll('.tech-item');
+    if (!items.length) return;
 
-    // --- 3. Three.js 3D Scene ---
-    function initThreeScene() {
-        const canvas = document.getElementById('three-canvas');
-        if (!canvas || typeof THREE === 'undefined' || prefersReducedMotion) return;
-
-        const scene = new THREE.Scene();
-        
-        const camera = new THREE.PerspectiveCamera(75, windowWidth / windowHeight, 0.1, 1000);
-        camera.position.z = 50;
-
-        const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
-        renderer.setSize(windowWidth, windowHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-        // Group for scroll rotation/push
-        const globeGroup = new THREE.Group();
-        scene.add(globeGroup);
-
-        // Globe
-        const geometry = new THREE.IcosahedronGeometry(15, 3);
-        const edges = new THREE.EdgesGeometry(geometry);
-        const material = new THREE.LineBasicMaterial({ color: 0x6366f1, opacity: 0.15, transparent: true });
-        const globe = new THREE.LineSegments(edges, material);
-        globeGroup.add(globe);
-
-        // Particles
-        const particlesGeometry = new THREE.BufferGeometry();
-        const particlesCount = 600;
-        const posArray = new Float32Array(particlesCount * 3);
-
-        for(let i = 0; i < particlesCount * 3; i+=3) {
-            // Random point in sphere
-            const u = Math.random();
-            const v = Math.random();
-            const theta = u * 2.0 * Math.PI;
-            const phi = Math.acos(2.0 * v - 1.0);
-            const r = Math.cbrt(Math.random()) * 80;
-
-            posArray[i] = r * Math.sin(phi) * Math.cos(theta);
-            posArray[i+1] = r * Math.sin(phi) * Math.sin(theta);
-            posArray[i+2] = r * Math.cos(phi);
-        }
-        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-        
-        const particlesMaterial = new THREE.PointsMaterial({
-            size: 0.3,
-            color: 0x6366f1,
-            transparent: true,
-            opacity: 0.4,
-            blending: THREE.AdditiveBlending
+    ScrollTrigger.create({
+      trigger: '.tech',
+      start: 'top 60%',
+      onEnter: () => {
+        items.forEach((item, i) => {
+          setTimeout(() => item.classList.add('visible'), i * 80);
         });
-        
-        const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
-        scene.add(particlesMesh);
+      },
+      once: true
+    });
+  }
 
-        // ScrollTrigger to push globe away
-        if (typeof ScrollTrigger !== 'undefined') {
-            gsap.to(globeGroup.position, {
-                z: -50,
-                ease: 'none',
-                scrollTrigger: {
-                    trigger: document.body,
-                    start: 'top top',
-                    end: 'bottom bottom',
-                    scrub: 1
-                }
-            });
+  /* ================================================================
+     10. WHY — Progressive highlight
+     ================================================================ */
+  function initWhy() {
+    if (prefersReduced) return;
+    const points = document.querySelectorAll('.why-point');
+    if (!points.length) return;
+
+    points.forEach((point, i) => {
+      ScrollTrigger.create({
+        trigger: point,
+        start: 'top 65%',
+        end: 'bottom 35%',
+        onEnter: () => point.classList.add('active'),
+        onLeave: () => point.classList.remove('active'),
+        onEnterBack: () => point.classList.add('active'),
+        onLeaveBack: () => point.classList.remove('active')
+      });
+    });
+  }
+
+  /* ================================================================
+     11. CTA TITLE
+     ================================================================ */
+  function initCta() {
+    if (prefersReduced) return;
+    const words = document.querySelectorAll('.cta-title .word');
+    if (!words.length) return;
+    gsap.fromTo(words, { y: '100%', opacity: 0 }, {
+      y: '0%', opacity: 1, duration: 1, stagger: 0.1, ease: 'power4.out',
+      scrollTrigger: { trigger: '.cta', start: 'top 70%' }
+    });
+  }
+
+  /* ================================================================
+     12. MAGNETIC BUTTONS
+     ================================================================ */
+  function initMagnetic() {
+    if (prefersReduced || wW <= 768) return;
+    document.querySelectorAll('[data-magnetic]').forEach(btn => {
+      btn.addEventListener('mousemove', e => {
+        const r = btn.getBoundingClientRect();
+        const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+        const dx = e.clientX - cx, dy = e.clientY - cy;
+        const d = Math.sqrt(dx * dx + dy * dy);
+        if (d < 120) {
+          gsap.to(btn, { x: (dx / 120) * 18, y: (dy / 120) * 18, duration: 0.3, ease: 'power2.out' });
         }
+      });
+      btn.addEventListener('mouseleave', () => {
+        gsap.to(btn, { x: 0, y: 0, duration: 0.7, ease: 'elastic.out(1,0.3)' });
+      });
+    });
+  }
 
-        // Animation Loop
-        function animate() {
-            requestAnimationFrame(animate);
+  /* ================================================================
+     INIT
+     ================================================================ */
+  function init() {
+    initThree();
+    initNav();
+    initLoader();
+    initCursor();
+    initServices();
+    initWorkIntro();
+    initStorySMC();
+    initStoryWF();
+    initStoryDNS();
+    initTransitions();
+    initTech();
+    initWhy();
+    initCta();
+    initMagnetic();
+  }
 
-            // Auto rotation
-            globe.rotation.y += 0.001;
-            globe.rotation.x += 0.0005;
-            
-            particlesMesh.rotation.y -= 0.0005;
-
-            // Mouse parallax
-            camera.position.x += (normMouseX * 5 - camera.position.x) * 0.02;
-            camera.position.y += (normMouseY * 5 - camera.position.y) * 0.02;
-
-            camera.lookAt(scene.position);
-
-            renderer.render(scene, camera);
-        }
-        animate();
-
-        // Resize handler
-        window.addEventListener('resize', debounce(() => {
-            camera.aspect = windowWidth / windowHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(windowWidth, windowHeight);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        }, 250));
-    }
-
-
-    // --- 4. Navigation Scroll Effect ---
-    function initNavScroll() {
-        const nav = document.getElementById('nav');
-        if (!nav) return;
-
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 100) {
-                nav.classList.add('nav-scrolled');
-            } else {
-                nav.classList.remove('nav-scrolled');
-            }
-        }, { passive: true });
-    }
-
-
-    // --- 5. Hero Entrance Animation ---
-    function initHeroAnimations() {
-        if (prefersReducedMotion) return;
-
-        const tl = gsap.timeline();
-
-        const titleWords = document.querySelectorAll('.hero-title .word');
-        if (titleWords.length) {
-            tl.fromTo(titleWords, 
-                { y: '120%', opacity: 0 },
-                { y: '0%', opacity: 1, duration: 1, stagger: 0.15, ease: 'power4.out' }
-            );
-        }
-
-        const overline = document.querySelector('.hero-overline');
-        if (overline) {
-            tl.fromTo(overline,
-                { y: 20, opacity: 0 },
-                { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' },
-                "<0.5"
-            );
-        }
-
-        const sub = document.querySelector('.hero-sub');
-        if (sub) {
-            tl.fromTo(sub,
-                { y: 20, opacity: 0 },
-                { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' },
-                "<0.2"
-            );
-        }
-
-        const scrollHint = document.querySelector('.hero-scroll');
-        if (scrollHint) {
-            tl.fromTo(scrollHint,
-                { opacity: 0 },
-                { opacity: 1, duration: 1 },
-                "<0.8"
-            );
-        }
-    }
-
-
-    // --- 6. Services Horizontal Scroll ---
-    function initServicesHorizontal() {
-        const servicesSection = document.querySelector('.services');
-        const track = document.querySelector('.services-track');
-        const panels = document.querySelectorAll('.service-panel');
-
-        if (!servicesSection || !track || panels.length === 0 || prefersReducedMotion) return;
-
-        // Horizontal scroll
-        const scrollTween = gsap.to(track, {
-            x: () => -(track.scrollWidth - window.innerWidth),
-            ease: 'none',
-            scrollTrigger: {
-                trigger: servicesSection,
-                pin: true,
-                scrub: 1,
-                end: () => '+=' + (track.scrollWidth - window.innerWidth)
-            }
-        });
-
-        // Animations inside panels
-        panels.forEach((panel) => {
-            const inner = panel.querySelector('.panel-inner');
-            const number = panel.querySelector('.panel-number');
-
-            if (inner) {
-                gsap.fromTo(inner, 
-                    { opacity: 0, y: 30 },
-                    { 
-                        opacity: 1, 
-                        y: 0, 
-                        ease: 'power2.out',
-                        scrollTrigger: {
-                            trigger: panel,
-                            containerAnimation: scrollTween,
-                            start: 'left center',
-                            toggleActions: 'play none none reverse'
-                        }
-                    }
-                );
-            }
-
-            if (number) {
-                gsap.to(number, {
-                    x: 100, // Parallax move
-                    ease: 'none',
-                    scrollTrigger: {
-                        trigger: panel,
-                        containerAnimation: scrollTween,
-                        start: 'left right',
-                        end: 'right left',
-                        scrub: true
-                    }
-                });
-            }
-        });
-    }
-
-
-    // --- 7. Work Cards Scroll Animation ---
-    function initWorkCards() {
-        if (prefersReducedMotion) return;
-
-        const cards = document.querySelectorAll('.work-card');
-        
-        cards.forEach(card => {
-            const mockup = card.querySelector('.card-mockup');
-            const info = card.querySelector('.card-info');
-
-            // Card entrance
-            const tl = gsap.timeline({
-                scrollTrigger: {
-                    trigger: card,
-                    start: 'top 80%',
-                }
-            });
-
-            tl.fromTo(card, 
-                { opacity: 0, y: 80, rotateX: 5 },
-                { opacity: 1, y: 0, rotateX: 0, duration: 1, ease: 'power3.out' }
-            );
-
-            // Stagger internals if they exist
-            const internals = [];
-            if (mockup) internals.push(mockup);
-            if (info) internals.push(info);
-
-            if (internals.length) {
-                tl.fromTo(internals,
-                    { opacity: 0, y: 30 },
-                    { opacity: 1, y: 0, duration: 0.8, stagger: 0.2, ease: 'power2.out' },
-                    "-=0.5"
-                );
-            }
-
-            // Parallax on mockup
-            if (mockup) {
-                gsap.to(mockup, {
-                    y: -50,
-                    ease: 'none',
-                    scrollTrigger: {
-                        trigger: card,
-                        start: 'top bottom',
-                        end: 'bottom top',
-                        scrub: true
-                    }
-                });
-            }
-        });
-    }
-
-
-    // --- 8. Tech Grid Reveal ---
-    function initTechGrid() {
-        if (prefersReducedMotion) return;
-
-        const techSection = document.querySelector('.tech');
-        const items = document.querySelectorAll('.tech-item');
-
-        if (!techSection || items.length === 0) return;
-
-        ScrollTrigger.create({
-            trigger: techSection,
-            start: 'top 60%',
-            onEnter: () => {
-                items.forEach((item, index) => {
-                    const delay = item.getAttribute('data-delay') || (index * 0.08);
-                    
-                    gsap.fromTo(item,
-                        { opacity: 0, y: 20, filter: 'blur(10px)' },
-                        { 
-                            opacity: 1, 
-                            y: 0, 
-                            filter: 'blur(0px)', 
-                            duration: 0.8, 
-                            delay: parseFloat(delay),
-                            ease: 'power2.out',
-                            onComplete: () => item.classList.add('visible')
-                        }
-                    );
-                });
-            }
-        });
-    }
-
-
-    // --- 9. Why Section - Progressive Highlight ---
-    function initWhySection() {
-        const whySection = document.querySelector('.why');
-        const points = document.querySelectorAll('.why-point');
-
-        if (!whySection || points.length === 0) return;
-
-        ScrollTrigger.create({
-            trigger: whySection,
-            start: 'top bottom',
-            end: 'bottom top',
-            onUpdate: () => {
-                let closestPoint = null;
-                let minDistance = Infinity;
-                const centerY = windowHeight / 2;
-
-                points.forEach(point => {
-                    const rect = point.getBoundingClientRect();
-                    const pointCenterY = rect.top + rect.height / 2;
-                    const distance = Math.abs(centerY - pointCenterY);
-
-                    if (distance < minDistance) {
-                        minDistance = distance;
-                        closestPoint = point;
-                    }
-                });
-
-                points.forEach(point => {
-                    if (point === closestPoint) {
-                        point.classList.add('active');
-                    } else {
-                        point.classList.remove('active');
-                    }
-                });
-            }
-        });
-    }
-
-
-    // --- 10. CTA Title Animation ---
-    function initCtaTitle() {
-        if (prefersReducedMotion) return;
-
-        const ctaWords = document.querySelectorAll('.cta-title .word');
-        if (ctaWords.length === 0) return;
-
-        gsap.fromTo(ctaWords,
-            { y: '100%', opacity: 0 },
-            { 
-                y: '0%', 
-                opacity: 1, 
-                duration: 1, 
-                stagger: 0.1, 
-                ease: 'power3.out',
-                scrollTrigger: {
-                    trigger: '.cta-title',
-                    start: 'top 70%'
-                }
-            }
-        );
-    }
-
-
-    // --- 11. Magnetic Button Effect ---
-    function initMagneticButtons() {
-        if (prefersReducedMotion || windowWidth <= 768) return;
-
-        const magneticEls = document.querySelectorAll('[data-magnetic], .cta-btn');
-
-        magneticEls.forEach(btn => {
-            btn.addEventListener('mousemove', (e) => {
-                const rect = btn.getBoundingClientRect();
-                const btnCenterX = rect.left + rect.width / 2;
-                const btnCenterY = rect.top + rect.height / 2;
-                
-                const distanceX = e.clientX - btnCenterX;
-                const distanceY = e.clientY - btnCenterY;
-                
-                // If within roughly 100px of center (simplified threshold)
-                const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
-                if (distance < 100) {
-                    const moveX = (distanceX / 100) * 15;
-                    const moveY = (distanceY / 100) * 15;
-                    
-                    gsap.to(btn, { x: moveX, y: moveY, duration: 0.3, ease: 'power2.out' });
-                }
-            });
-
-            btn.addEventListener('mouseleave', () => {
-                gsap.to(btn, { x: 0, y: 0, duration: 0.7, ease: 'elastic.out(1, 0.3)' });
-            });
-        });
-    }
-
-
-    // --- Initialize All ---
-    function init() {
-        initThreeScene();
-        initNavScroll();
-        initLoader(); // This will trigger initHeroAnimations on completion
-        initCursor();
-        initServicesHorizontal();
-        initWorkCards();
-        initTechGrid();
-        initWhySection();
-        initCtaTitle();
-        initMagneticButtons();
-    }
-
-    // Run when DOM is ready
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
-    } else {
-        init();
-    }
-
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
 })();

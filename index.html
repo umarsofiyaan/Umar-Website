@@ -4,49 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Umar Sofiyaan — I Build Digital Products</title>
-  <meta name="description" content="I build SaaS applications, business websites, CRMs, HRMS, e-commerce platforms, and immersive 3D web experiences. From concept to production.">
+  <meta name="description" content="SaaS apps, stunning websites, CRMs, HRMS, e-commerce platforms. From concept to production.">
   <link rel="canonical" href="https://umarsofiyaan.shop/">
-
-  <!-- OG -->
   <meta property="og:title" content="Umar Sofiyaan — I Build Digital Products">
   <meta property="og:description" content="SaaS apps, stunning websites, CRMs, HRMS, e-commerce. From concept to production.">
   <meta property="og:url" content="https://umarsofiyaan.shop/">
   <meta property="og:type" content="website">
-  <meta name="twitter:card" content="summary_large_image">
-
-  <!-- Structured Data -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "ProfessionalService",
-    "name": "Umar Sofiyaan",
-    "url": "https://umarsofiyaan.shop",
-    "description": "Full-stack SaaS development, business websites, CRM/HRMS, and e-commerce platforms.",
-    "founder": {
-      "@type": "Person",
-      "name": "Mohammad Umar Sofiyaan",
-      "jobTitle": "Full-Stack Developer & Cloud Security Engineer"
-    },
-    "areaServed": "Worldwide",
-    "sameAs": [
-      "https://github.com/umarsofiyaan",
-      "https://linkedin.com/in/umarsofiyaan",
-      "https://x.com/umarsofiyaan"
-    ]
-  }
-  </script>
-
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-
-  <!-- Styles -->
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-  <!-- ═══════════════════ LOADER ═══════════════════ -->
+  <!-- ═══ LOADER ═══ -->
   <div class="loader" id="loader">
     <div class="loader-inner">
       <div class="loader-bar"><div class="loader-bar-fill"></div></div>
@@ -54,27 +25,29 @@
     </div>
   </div>
 
-  <!-- ═══════════════════ CUSTOM CURSOR ═══════════════════ -->
+  <!-- ═══ CURSOR ═══ -->
   <div class="cursor" id="cursor">
     <div class="cursor-dot"></div>
     <div class="cursor-ring"></div>
   </div>
 
-  <!-- ═══════════════════ THREE.JS CANVAS ═══════════════════ -->
+  <!-- ═══ CANVAS ═══ -->
   <canvas id="three-canvas"></canvas>
 
-  <!-- ═══════════════════ NAVIGATION ═══════════════════ -->
+  <!-- ═══ NAV ═══ -->
   <nav class="nav" id="nav">
     <a href="/" class="nav-logo">US<span>.</span></a>
     <ul class="nav-links">
       <li><a href="#services">Services</a></li>
-      <li><a href="#work">Work</a></li>
+      <li><a href="#story-smc">Work</a></li>
       <li><a href="#tech">Stack</a></li>
     </ul>
     <a href="contact.html" class="nav-cta">Let's Talk</a>
   </nav>
 
-  <!-- ═══════════════════ SECTION 1: HERO ═══════════════════ -->
+  <!-- ═══════════════════════════════════════════════════════════════
+       HERO
+       ═══════════════════════════════════════════════════════════════ -->
   <section class="section hero" id="hero">
     <div class="hero-content">
       <div class="hero-overline">SaaS &bull; Websites &bull; CRM &bull; HRMS &bull; E-Commerce</div>
@@ -92,11 +65,11 @@
     </div>
   </section>
 
-  <!-- ═══════════════════ SECTION 2: SERVICES (Horizontal Scroll) ═══════════════════ -->
+  <!-- ═══════════════════════════════════════════════════════════════
+       SERVICES — Horizontal Scroll
+       ═══════════════════════════════════════════════════════════════ -->
   <section class="section services" id="services">
     <div class="services-track">
-
-      <!-- Intro Panel -->
       <div class="service-panel intro-panel">
         <div class="panel-inner">
           <div class="section-label">What I Build</div>
@@ -104,199 +77,223 @@
           <p class="panel-sub">From SaaS platforms processing thousands of users to immersive 3D websites that win awards — I handle the full stack.</p>
         </div>
       </div>
-
-      <!-- Panel 1: SaaS -->
       <div class="service-panel">
         <div class="panel-inner">
           <div class="panel-number">01</div>
           <h3 class="panel-name">SaaS<br>Applications</h3>
           <div class="panel-line"></div>
-          <p class="panel-desc">Full-stack web apps with auth, payments, dashboards, APIs, and admin panels. Built to scale from day one with React, Node.js, and PostgreSQL.</p>
-          <div class="panel-tags">
-            <span>React</span><span>Node.js</span><span>PostgreSQL</span><span>Razorpay</span><span>Redis</span>
-          </div>
+          <p class="panel-desc">Full-stack web apps with auth, payments, dashboards, APIs, and admin panels. Built to scale from day one.</p>
         </div>
       </div>
-
-      <!-- Panel 2: Websites -->
       <div class="service-panel">
         <div class="panel-inner">
           <div class="panel-number">02</div>
           <h3 class="panel-name">Business<br>Websites</h3>
           <div class="panel-line"></div>
-          <p class="panel-desc">Immersive 3D experiences, landing pages, and corporate sites with scroll-driven animations. The kind of sites that make your competitors jealous.</p>
-          <div class="panel-tags">
-            <span>Three.js</span><span>GSAP</span><span>Tailwind</span><span>Cloudflare</span><span>SEO</span>
-          </div>
+          <p class="panel-desc">Immersive 3D experiences, landing pages, and corporate sites with scroll-driven animations. Like this one.</p>
         </div>
       </div>
-
-      <!-- Panel 3: CRM/HRMS -->
       <div class="service-panel">
         <div class="panel-inner">
           <div class="panel-number">03</div>
           <h3 class="panel-name">CRM / HRMS<br>& Internal Tools</h3>
           <div class="panel-line"></div>
-          <p class="panel-desc">Admin consoles, employee management, ticketing systems, and workflow automation. Enterprise-grade tools your team will actually enjoy using.</p>
-          <div class="panel-tags">
-            <span>React</span><span>Express</span><span>Google APIs</span><span>BullMQ</span><span>Gemini AI</span>
-          </div>
+          <p class="panel-desc">Enterprise-grade admin consoles, workflow automation, and AI-powered tools your team will actually enjoy.</p>
         </div>
       </div>
-
-      <!-- Panel 4: E-Commerce -->
       <div class="service-panel">
         <div class="panel-inner">
           <div class="panel-number">04</div>
           <h3 class="panel-name">E-Commerce<br>& Storefronts</h3>
           <div class="panel-line"></div>
-          <p class="panel-desc">Online stores that convert. Beautiful product pages, cart flows, payment integrations, and inventory management — fast, mobile-first, and SEO-optimized.</p>
-          <div class="panel-tags">
-            <span>React</span><span>Stripe</span><span>Razorpay</span><span>Cloudflare</span><span>Analytics</span>
-          </div>
+          <p class="panel-desc">Online stores that convert. Beautiful product pages, cart flows, payment integrations — fast and mobile-first.</p>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       WORK INTRO
+       ═══════════════════════════════════════════════════════════════ -->
+  <section class="section work-intro" id="work-intro">
+    <h2 class="work-intro-text">
+      <span class="wi-line">Don't take</span>
+      <span class="wi-line">my word for it.</span>
+      <span class="wi-line accent">See the work.</span>
+    </h2>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       STORY 1: SMART MAILBOX CLEANER
+       Scroll-driven motion graphics narrative
+       ═══════════════════════════════════════════════════════════════ -->
+  <section class="story" id="story-smc">
+    <div class="story-stage">
+
+      <!-- Frame 1: The Problem -->
+      <div class="sf" id="smc-1">
+        <span class="sf-emoji">📧</span>
+      </div>
+      <div class="sf" id="smc-2">
+        <h2 class="sf-display">YOUR INBOX<br>IS A MESS.</h2>
+      </div>
+
+      <!-- Frame 2: The Scale -->
+      <div class="sf" id="smc-3">
+        <h2 class="sf-mega">7,283</h2>
+        <p class="sf-sub">unread emails. Sound familiar?</p>
+      </div>
+
+      <!-- Frame 3: The Solution -->
+      <div class="sf" id="smc-4">
+        <h2 class="sf-display">7 CATEGORIES.</h2>
+      </div>
+      <div class="sf" id="smc-5">
+        <h2 class="sf-display">ONE SCAN.</h2>
+      </div>
+      <div class="sf" id="smc-6">
+        <h2 class="sf-display accent">SORTED.</h2>
+      </div>
+
+      <!-- Frame 4: Bulk Delete -->
+      <div class="sf" id="smc-7">
+        <h2 class="sf-display">BULK DELETE?</h2>
+      </div>
+      <div class="sf" id="smc-8">
+        <h2 class="sf-hero">WE GOT YOU.</h2>
+        <p class="sf-sub">One click. Thousands gone.</p>
+      </div>
+
+      <!-- Frame 5: Safety -->
+      <div class="sf" id="smc-9">
+        <h2 class="sf-display">OOPS?</h2>
+      </div>
+      <div class="sf" id="smc-10">
+        <h2 class="sf-hero accent">30-DAY UNDO.</h2>
+        <p class="sf-sub">Breathe. We got that covered too.</p>
+      </div>
+
+      <!-- Frame 6: CTA -->
+      <div class="sf" id="smc-11">
+        <p class="sf-label">SaaS Product — Live & Used by Thousands</p>
+        <h2 class="sf-product-name">Smart Mailbox<br>Cleaner</h2>
+        <a href="https://smartmailboxcleaner.com" target="_blank" class="sf-link">
+          smartmailboxcleaner.com
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>
+        </a>
       </div>
 
     </div>
   </section>
 
-  <!-- ═══════════════════ SECTION 3: WORK (Stacked Cards) ═══════════════════ -->
-  <section class="section work" id="work">
-    <div class="work-header">
-      <div class="section-label">Selected Work</div>
-      <h2 class="work-title">Don't take my word for it.<br><span>See the work.</span></h2>
+  <!-- ═══ TRANSITION ═══ -->
+  <section class="story-transition" id="trans-1">
+    <div class="sf">
+      <p class="sf-sub-quiet">That's not all.</p>
     </div>
+  </section>
 
-    <div class="work-cards">
+  <!-- ═══════════════════════════════════════════════════════════════
+       STORY 2: WORKSPACEFORGE
+       ═══════════════════════════════════════════════════════════════ -->
+  <section class="story" id="story-wf">
+    <div class="story-stage">
 
-      <!-- Card 1: Smart Mailbox Cleaner -->
-      <div class="work-card" data-accent="#2c70a6">
-        <div class="card-inner">
-          <div class="card-mockup smc-mockup">
-            <div class="mockup-browser">
-              <div class="browser-dots"><span></span><span></span><span></span></div>
-              <div class="browser-url">smartmailboxcleaner.com</div>
-            </div>
-            <div class="mockup-screen">
-              <div class="mockup-gradient" style="background: linear-gradient(135deg, #1a4a6e, #2c70a6, #3d8fd4);"></div>
-              <div class="mockup-text">
-                <span class="mockup-icon">📧</span>
-                <span class="mockup-label">Smart Mailbox Cleaner</span>
-              </div>
-            </div>
-          </div>
-          <div class="card-info">
-            <div class="card-tag">SaaS Product</div>
-            <h3 class="card-title">Smart Mailbox Cleaner</h3>
-            <p class="card-desc">AI-powered Gmail cleanup tool. 7-category smart scan, one-click bulk deletion, 30-day undo safety net, and automation playbooks. Used by thousands to reclaim storage.</p>
-            <ul class="card-features">
-              <li>Chrome Extension + Web App</li>
-              <li>React + Node.js + PostgreSQL</li>
-              <li>Freemium with Razorpay Billing</li>
-            </ul>
-            <a href="https://smartmailboxcleaner.com" target="_blank" class="card-link">
-              <span>Visit Site</span>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>
-            </a>
-          </div>
-        </div>
+      <div class="sf" id="wf-1">
+        <h2 class="sf-display">YOUR ADMIN<br>CONSOLE</h2>
+      </div>
+      <div class="sf" id="wf-2">
+        <h2 class="sf-display dim">IS STUCK<br>IN 2015.</h2>
       </div>
 
-      <!-- Card 2: WorkspaceForge -->
-      <div class="work-card" data-accent="#6366f1">
-        <div class="card-inner">
-          <div class="card-mockup wf-mockup">
-            <div class="mockup-browser">
-              <div class="browser-dots"><span></span><span></span><span></span></div>
-              <div class="browser-url">workspaceforge.smartmailboxcleaner.com</div>
-            </div>
-            <div class="mockup-screen">
-              <div class="mockup-gradient" style="background: linear-gradient(135deg, #4338ca, #6366f1, #818cf8);"></div>
-              <div class="mockup-text">
-                <span class="mockup-icon">🛡️</span>
-                <span class="mockup-label">WorkspaceForge</span>
-              </div>
-            </div>
-          </div>
-          <div class="card-info">
-            <div class="card-tag">Admin Console / HRMS</div>
-            <h3 class="card-title">WorkspaceForge</h3>
-            <p class="card-desc">The modern Google Workspace admin console. 50+ features for user management, security auditing, bulk operations, compliance, and AI-powered automation.</p>
-            <ul class="card-features">
-              <li>AI Admin Assistant (Gemini 2.5 Pro)</li>
-              <li>Policy Diff Engine & Audit Trail</li>
-              <li>React 19 + Express + BullMQ</li>
-            </ul>
-            <a href="https://workspaceforge.smartmailboxcleaner.com" target="_blank" class="card-link">
-              <span>Visit Site</span>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>
-            </a>
-          </div>
-        </div>
+      <div class="sf" id="wf-3">
+        <h2 class="sf-mega accent">50+</h2>
+        <p class="sf-sub">features. One dashboard.</p>
       </div>
 
-      <!-- Card 3: DNS Tool -->
-      <div class="work-card" data-accent="#10b981">
-        <div class="card-inner">
-          <div class="card-mockup dns-mockup">
-            <div class="mockup-browser">
-              <div class="browser-dots"><span></span><span></span><span></span></div>
-              <div class="browser-url">dns.umarsofiyaan.shop</div>
-            </div>
-            <div class="mockup-screen">
-              <div class="mockup-gradient" style="background: linear-gradient(135deg, #065f46, #10b981, #34d399);"></div>
-              <div class="mockup-text">
-                <span class="mockup-icon">🌐</span>
-                <span class="mockup-label">DNS Investigation Tool</span>
-              </div>
-            </div>
-          </div>
-          <div class="card-info">
-            <div class="card-tag">Security Tool</div>
-            <h3 class="card-title">DNS Investigation Tool</h3>
-            <p class="card-desc">Single-pane DNS & email security diagnostics. Real-time MX, SPF, DKIM, DMARC, BIMI & PTR lookups. Built for enterprise IT support teams doing rapid incident triage.</p>
-            <ul class="card-features">
-              <li>Zero-install Web Tool</li>
-              <li>Real-time Record Validation</li>
-              <li>Built for Enterprise Support</li>
-            </ul>
-            <a href="https://dns.umarsofiyaan.shop" target="_blank" class="card-link">
-              <span>Visit Site</span>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>
-            </a>
-          </div>
-        </div>
+      <div class="sf" id="wf-4">
+        <h2 class="sf-display">MEET YOUR<br>AI ADMIN.</h2>
+      </div>
+      <div class="sf" id="wf-5">
+        <h2 class="sf-hero">POWERED BY<br><span class="accent">GEMINI.</span></h2>
+        <p class="sf-sub">Policies. Audits. Compliance. Automated.</p>
+      </div>
+
+      <div class="sf" id="wf-6">
+        <p class="sf-label">Admin Console / HRMS — 50+ Features</p>
+        <h2 class="sf-product-name">Workspace<br>Forge</h2>
+        <a href="https://workspaceforge.smartmailboxcleaner.com" target="_blank" class="sf-link">
+          workspaceforge.smartmailboxcleaner.com
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>
+        </a>
       </div>
 
     </div>
   </section>
 
-  <!-- ═══════════════════ SECTION 4: TECH STACK ═══════════════════ -->
+  <!-- ═══ TRANSITION ═══ -->
+  <section class="story-transition" id="trans-2">
+    <div class="sf">
+      <p class="sf-sub-quiet">One more thing.</p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       STORY 3: DNS TOOL
+       ═══════════════════════════════════════════════════════════════ -->
+  <section class="story" id="story-dns">
+    <div class="story-stage">
+
+      <div class="sf" id="dns-1">
+        <h2 class="sf-display mono">MX? SPF?<br>DKIM? DMARC?</h2>
+      </div>
+      <div class="sf" id="dns-2">
+        <h2 class="sf-display mono">BIMI? PTR?</h2>
+        <p class="sf-sub">Yeah, all of them.</p>
+      </div>
+
+      <div class="sf" id="dns-3">
+        <h2 class="sf-hero accent">ONE LOOKUP.</h2>
+        <p class="sf-sub">Zero installs. Built for enterprise support teams.</p>
+      </div>
+
+      <div class="sf" id="dns-4">
+        <p class="sf-label">Security Tool — Enterprise-Grade</p>
+        <h2 class="sf-product-name">DNS Investigation<br>Tool</h2>
+        <a href="https://dns.umarsofiyaan.shop" target="_blank" class="sf-link">
+          dns.umarsofiyaan.shop
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════
+       TECH STACK
+       ═══════════════════════════════════════════════════════════════ -->
   <section class="section tech" id="tech">
     <div class="tech-inner">
       <div class="section-label">Technology</div>
       <h2 class="tech-title">Built with battle-tested<br><span>technology.</span></h2>
-
       <div class="tech-grid">
-        <div class="tech-item" data-delay="0"><span class="ti-icon">⚛️</span><span class="ti-name">React</span></div>
-        <div class="tech-item" data-delay="1"><span class="ti-icon">🟢</span><span class="ti-name">Node.js</span></div>
-        <div class="tech-item" data-delay="2"><span class="ti-icon">⚡</span><span class="ti-name">Vite</span></div>
-        <div class="tech-item" data-delay="3"><span class="ti-icon">🎨</span><span class="ti-name">Tailwind</span></div>
-        <div class="tech-item" data-delay="4"><span class="ti-icon">🐘</span><span class="ti-name">PostgreSQL</span></div>
-        <div class="tech-item" data-delay="5"><span class="ti-icon">🔴</span><span class="ti-name">Redis</span></div>
-        <div class="tech-item" data-delay="6"><span class="ti-icon">🐍</span><span class="ti-name">Python</span></div>
-        <div class="tech-item" data-delay="7"><span class="ti-icon">☁️</span><span class="ti-name">Google Cloud</span></div>
-        <div class="tech-item" data-delay="8"><span class="ti-icon">🌐</span><span class="ti-name">Cloudflare</span></div>
-        <div class="tech-item" data-delay="9"><span class="ti-icon">✨</span><span class="ti-name">Gemini AI</span></div>
-        <div class="tech-item" data-delay="10"><span class="ti-icon">🏗️</span><span class="ti-name">Express</span></div>
-        <div class="tech-item" data-delay="11"><span class="ti-icon">📦</span><span class="ti-name">BullMQ</span></div>
-        <div class="tech-item" data-delay="12"><span class="ti-icon">🔌</span><span class="ti-name">Chrome MV3</span></div>
-        <div class="tech-item" data-delay="13"><span class="ti-icon">💳</span><span class="ti-name">Razorpay</span></div>
-        <div class="tech-item" data-delay="14"><span class="ti-icon">🚀</span><span class="ti-name">Fly.io</span></div>
-        <div class="tech-item" data-delay="15"><span class="ti-icon">🔒</span><span class="ti-name">CrowdStrike</span></div>
+        <div class="tech-item"><span class="ti-icon">⚛️</span><span class="ti-name">React</span></div>
+        <div class="tech-item"><span class="ti-icon">🟢</span><span class="ti-name">Node.js</span></div>
+        <div class="tech-item"><span class="ti-icon">⚡</span><span class="ti-name">Vite</span></div>
+        <div class="tech-item"><span class="ti-icon">🎨</span><span class="ti-name">Tailwind</span></div>
+        <div class="tech-item"><span class="ti-icon">🐘</span><span class="ti-name">PostgreSQL</span></div>
+        <div class="tech-item"><span class="ti-icon">🔴</span><span class="ti-name">Redis</span></div>
+        <div class="tech-item"><span class="ti-icon">🐍</span><span class="ti-name">Python</span></div>
+        <div class="tech-item"><span class="ti-icon">☁️</span><span class="ti-name">Google Cloud</span></div>
+        <div class="tech-item"><span class="ti-icon">🌐</span><span class="ti-name">Cloudflare</span></div>
+        <div class="tech-item"><span class="ti-icon">✨</span><span class="ti-name">Gemini AI</span></div>
+        <div class="tech-item"><span class="ti-icon">🏗️</span><span class="ti-name">Express</span></div>
+        <div class="tech-item"><span class="ti-icon">📦</span><span class="ti-name">BullMQ</span></div>
+        <div class="tech-item"><span class="ti-icon">🔌</span><span class="ti-name">Chrome MV3</span></div>
+        <div class="tech-item"><span class="ti-icon">💳</span><span class="ti-name">Razorpay</span></div>
+        <div class="tech-item"><span class="ti-icon">🚀</span><span class="ti-name">Fly.io</span></div>
+        <div class="tech-item"><span class="ti-icon">🔒</span><span class="ti-name">CrowdStrike</span></div>
       </div>
-
-      <!-- Certs Ticker -->
       <div class="cert-ticker">
         <div class="cert-track">
           <span class="cert">🎓 Google Workspace Admin</span>
@@ -306,7 +303,6 @@
           <span class="cert">🏰 Fortinet FCA</span>
           <span class="cert">☁️ AWS Cloud Practitioner</span>
           <span class="cert">🌐 Cisco Networking</span>
-          <!-- Duplicate for loop -->
           <span class="cert">🎓 Google Workspace Admin</span>
           <span class="cert">🛡️ ISC2 Cybersecurity</span>
           <span class="cert">🔐 Google Cybersecurity Pro</span>
@@ -319,7 +315,9 @@
     </div>
   </section>
 
-  <!-- ═══════════════════ SECTION 5: WHY ME ═══════════════════ -->
+  <!-- ═══════════════════════════════════════════════════════════════
+       WHY ME
+       ═══════════════════════════════════════════════════════════════ -->
   <section class="section why" id="why">
     <div class="why-inner">
       <div class="section-label">Why Me</div>
@@ -338,7 +336,7 @@
           <div class="why-point" data-index="03">
             <div class="why-number">03</div>
             <h3 class="why-title">Enterprise DNA.</h3>
-            <p class="why-desc">4+ years supporting Fortune 500 companies at Cognizant. I build with enterprise reliability baked in from day one.</p>
+            <p class="why-desc">4+ years supporting Fortune 500 companies at Cognizant. Enterprise reliability baked in from day one.</p>
           </div>
           <div class="why-point" data-index="04">
             <div class="why-number">04</div>
@@ -353,7 +351,9 @@
     </div>
   </section>
 
-  <!-- ═══════════════════ SECTION 6: CTA ═══════════════════ -->
+  <!-- ═══════════════════════════════════════════════════════════════
+       CTA
+       ═══════════════════════════════════════════════════════════════ -->
   <section class="section cta" id="cta">
     <div class="cta-inner">
       <h2 class="cta-title">
@@ -363,7 +363,7 @@
         <span class="word accent">EXTRAORDINARY.</span>
       </h2>
       <p class="cta-sub">Have a project, idea, or business that needs a digital presence?<br>Let's make it happen.</p>
-      <a href="contact.html" class="cta-btn magnetic" data-magnetic>
+      <a href="contact.html" class="cta-btn" data-magnetic>
         <span class="cta-btn-text">Get In Touch</span>
         <span class="cta-btn-icon">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -372,7 +372,7 @@
     </div>
   </section>
 
-  <!-- ═══════════════════ FOOTER ═══════════════════ -->
+  <!-- ═══ FOOTER ═══ -->
   <footer class="footer">
     <div class="footer-inner">
       <div class="footer-left">
@@ -382,36 +382,24 @@
       <div class="footer-right">
         <div class="footer-links">
           <a href="#services">Services</a>
-          <a href="#work">Work</a>
+          <a href="#story-smc">Work</a>
           <a href="#tech">Stack</a>
           <a href="contact.html">Contact</a>
         </div>
         <div class="footer-social">
-          <a href="https://github.com/umarsofiyaan" target="_blank" aria-label="GitHub">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-          </a>
-          <a href="https://linkedin.com/in/umarsofiyaan" target="_blank" aria-label="LinkedIn">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-          </a>
-          <a href="https://x.com/umarsofiyaan" target="_blank" aria-label="X">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-          </a>
-          <a href="mailto:umarsofiyaan@gmail.com" aria-label="Email">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-          </a>
+          <a href="https://github.com/umarsofiyaan" target="_blank" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg></a>
+          <a href="https://linkedin.com/in/umarsofiyaan" target="_blank" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg></a>
+          <a href="https://x.com/umarsofiyaan" target="_blank" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+          <a href="mailto:umarsofiyaan@gmail.com" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></a>
         </div>
       </div>
     </div>
-    <div class="footer-bottom">
-      <p>© 2026 Mohammad Umar Sofiyaan. Crafted with Three.js, GSAP & ☕</p>
-    </div>
+    <div class="footer-bottom"><p>© 2026 Mohammad Umar Sofiyaan. Crafted with Three.js, GSAP & ☕</p></div>
   </footer>
 
-  <!-- ═══════════════════ SCRIPTS ═══════════════════ -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script src="js/main.js"></script>
-
 </body>
 </html>
