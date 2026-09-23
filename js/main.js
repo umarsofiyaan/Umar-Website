@@ -163,7 +163,7 @@
     showTxt('#txt-build', 'code+=2.0');
 
     // Hold
-    tl.to({}, { duration: .4 }, 'code+=2.3');
+    tl.to({}, { duration: .2 }, 'code+=2.3');
 
     // ──────────────────────────────────────────────
     // PHASE 2: CODE → INBOX TRANSITION (2.7 – 3.5)
@@ -190,7 +190,7 @@
     tl.fromTo('.email-row', { opacity: .6 }, { opacity: 1, duration: .1, stagger: .05 }, 'inbox-chaos');
 
     // Hold the chaos
-    tl.to({}, { duration: .6 }, 'inbox-chaos+=0.5');
+    tl.to({}, { duration: .3 }, 'inbox-chaos+=0.3');
 
     // ──────────────────────────────────────────────
     // PHASE 4: SCAN + SORT + DELETE (4.5 – 7.0)
@@ -236,12 +236,12 @@
     showTxt('#txt-smc-solution', 'smc-solve+=2.7');
 
     // Hold for product showcase
-    tl.to({}, { duration: 1.0 }, 'smc-solve+=3.0');
+    tl.to({}, { duration: .5 }, 'smc-solve+=3.0');
 
     // ──────────────────────────────────────────────
     // PHASE 5: INBOX → DASHBOARD (7.0 – 8.0)
     // ──────────────────────────────────────────────
-    tl.addLabel('to-dash', 'smc-solve+=4.0');
+    tl.addLabel('to-dash', 'smc-solve+=3.5');
 
     hideTxt('#txt-smc-solution', 'to-dash');
     tl.to('#inbox-toast', { opacity: 0, duration: .15 }, 'to-dash');
@@ -286,12 +286,12 @@
     tl.to('#ai-bubble', { opacity: 1, y: 0, duration: .3, ease: 'back.out(1.5)' }, 'dash+=1.2');
 
     // Hold
-    tl.to({}, { duration: 1.0 }, 'dash+=1.5');
+    tl.to({}, { duration: .5 }, 'dash+=1.5');
 
     // ──────────────────────────────────────────────
     // PHASE 7: DASHBOARD → TERMINAL (10.5 – 11.5)
     // ──────────────────────────────────────────────
-    tl.addLabel('to-term', 'dash+=2.5');
+    tl.addLabel('to-term', 'dash+=2.0');
 
     hideTxt('#txt-wf', 'to-term');
     tl.to('#ai-bubble', { opacity: 0, duration: .15 }, 'to-term');
@@ -313,12 +313,12 @@
     tl.to('#s-term .tl', { opacity: 1, duration: .1, stagger: .12, ease: 'none' }, 'term+=0.3');
 
     // Hold
-    tl.to({}, { duration: 1.2 }, 'term+=1.5');
+    tl.to({}, { duration: .5 }, 'term+=1.5');
 
     // ──────────────────────────────────────────────
-    // PHASE 9: OUTRO (14.0 – 15.0)
+    // PHASE 9: OUTRO
     // ──────────────────────────────────────────────
-    tl.addLabel('outro', 'term+=2.7');
+    tl.addLabel('outro', 'term+=2.0');
 
     hideTxt('#txt-dns', 'outro');
 
@@ -335,7 +335,7 @@
       pin: true,
       scrub: 1,
       start: 'top top',
-      end: '+=10000',
+      end: '+=6000',
       animation: tl,
       invalidateOnRefresh: true
     });
